@@ -11,7 +11,6 @@ public class PlatformChangeColor : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        ChangeColor();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
