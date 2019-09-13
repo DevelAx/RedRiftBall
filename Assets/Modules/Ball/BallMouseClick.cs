@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BallMouseClick : MonoBehaviour
 {
-    public int ForceFactor = 30;
-
     private Rigidbody2D _rigidbody;
     private Vector2 _forceDirection;
     private IEnumerator _coroutine;
@@ -42,11 +40,11 @@ public class BallMouseClick : MonoBehaviour
 
     private IEnumerator AddForceGradually()
     {
-        for (int i = 0; i < ForceFactor; i++)
+        do
         {
-            _rigidbody.AddForce(_forceDirection.normalized * Mathf.Max(5f, _gravity));
+            _rigidbody.AddForce(_forceDirection.normalized * _gravity);
             yield return null;
-        }
+        } while (!Input.GetMouseButtonUp(0));
     }
 
     #endregion
