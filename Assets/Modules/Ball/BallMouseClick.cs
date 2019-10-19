@@ -1,50 +1,59 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[DisallowMultipleComponent]
 public class BallMouseClick : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
-    private Vector2 _forceDirection;
-    private IEnumerator _coroutine;
-    private float _gravity;
-    private float _maxBallSpeed;
+    private Vector3 _mousePos;
+    private Vector2? _forceDirection;
+
+    #region MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-    }
-
-    private void Start()
-    {
-        _gravity = Physics2D.gravity.magnitude;
-        _maxBallSpeed = _gravity * _gravity;
+        _rigidbody = this.RequireComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            _forceDirection = new Vector2(mousePos.x, mousePos.y) - _rigidbody.position;
-
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
-
-            _coroutine = AddForceGradually();
-            StartCoroutine(_coroutine);
+            _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _forceDirection = new Vector2(_mousePos.x, _mousePos.y) - _rigidbody.position;
+        }
+        else
+        {
+            _forceDirection = null;
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (_forceDirection == null)
+            return;
+
+        Vector2 force = _forceDirection.Value.normalized;
+
+        if (force.y < 0) 
+            force.y *= 0.5f; // Slow down when leaning down.
+        else
+            force.y *= 2; // Accelerate when leaning up.
+
+        float factor = Mathf.Max(5, Physics2D.gravity.magnitude); // This befaviour is not clear from the task description, so I used Mathf.Max(...) to be able to up the ball from the floor.
+        _rigidbody.AddForce(force * factor);
+    }
+
+    #endregion
+
     #region Helpers
 
-    private IEnumerator AddForceGradually()
+    private void OnDrawGizmos()
     {
-        do
-        {
-            _rigidbody.AddForce(_forceDirection.normalized * _gravity);
-            yield return null;
-        } while (!Input.GetMouseButtonUp(0));
+        if (_forceDirection == null)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(_rigidbody.position, _rigidbody.position + _forceDirection.Value);
     }
 
     #endregion

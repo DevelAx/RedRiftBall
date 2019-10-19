@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[DisallowMultipleComponent]
 public class PlatformChangeColor : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
-    private Color[] _colors = new[] { Color.white, Color.yellow, Color.red, Color.magenta, Color.cyan, Color.black };
+    private Color[] _colors = new[] { Color.green, Color.yellow, Color.red, Color.magenta, Color.cyan, Color.black };
     private int _colorIndex;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = this.RequireComponent<SpriteRenderer>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

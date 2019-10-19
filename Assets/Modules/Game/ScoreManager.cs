@@ -3,28 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class ScoreManager : MonoBehaviour
 {
-    #region Public Static
-
-    public static int HitBallCounter;
-
-    #endregion
-
-    private static ScoreManager Instance;
     private static readonly GUIStyle _guiStyle = new GUIStyle();
+
+    #region MonoBehaviour
 
     private void Awake()
     {
-        if (Instance)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
         _guiStyle.fontSize = 26;
         _guiStyle.normal.textColor = Color.black;
     }
@@ -38,4 +25,12 @@ public class ScoreManager : MonoBehaviour
         Rect pos = new Rect(Screen.width - textSize.x - margin, margin, textSize.x, textSize.y);
         GUI.Label(pos, content, _guiStyle);
     }
+
+    #endregion
+
+    #region Public Static
+
+    public static int HitBallCounter;
+
+    #endregion
 }

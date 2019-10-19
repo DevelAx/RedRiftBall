@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class BallBounceSound : MonoBehaviour
 {
     public AudioSource BallHitAudioSource;
@@ -12,9 +13,7 @@ public class BallBounceSound : MonoBehaviour
     private void Awake()
     {
         if (!BallHitAudioSource)
-            BallHitAudioSource = GetComponent<AudioSource>();
-
-        Debug.Assert(BallHitAudioSource, "'BallHitAudioSource' is not set!");
+            BallHitAudioSource = this.RequireComponent<AudioSource>();
 
         _rigidbody = GetComponent<Rigidbody2D>();
         _gravitySqr = Physics2D.gravity.sqrMagnitude;
