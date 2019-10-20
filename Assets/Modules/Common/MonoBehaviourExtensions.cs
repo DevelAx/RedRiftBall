@@ -42,6 +42,6 @@ public static class MonoBehaviourExtensions
 
     public static void Assert(this MonoBehaviour mono, UnityEngine.Object obj)
     {
-        Debug.Assert(obj, $"Object shouldn't be null at '{mono.name}'!");
+        Debug.Assert(obj, $"Object shouldn't be null at the '{mono.GetType().Name}' class of the '{mono.name}' game object.");
     }
 }

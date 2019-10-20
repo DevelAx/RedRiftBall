@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public Menu Menu;
 
     private static bool _inMenu = true;
+    private static GameManager _this;
 
     #region MonoBehaviour
 
@@ -33,11 +34,14 @@ public class GameManager : MonoBehaviour
 
     #region Public
 
+    public static float GravityMagnitude { get; private set; }
+
     public void ChangePlanet(ButtonPlanetConfig newPlanetConfig)
     {
         Menu.Hide();
         PlanetParams opts = newPlanetConfig.Params;
         Physics2D.gravity = Vector2.down * opts.Gravity;
+        GravityMagnitude = Physics2D.gravity.magnitude;
         Camera.main.backgroundColor = opts.SkyColor;
         _inMenu = false;
     }

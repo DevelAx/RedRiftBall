@@ -12,6 +12,7 @@ public class BallMouseClick : MonoBehaviour
     private void Awake()
     {
         _rigidbody = this.RequireComponent<Rigidbody2D>();
+        Menu.AddDependant(this);
     }
 
     private void Update()
@@ -32,15 +33,12 @@ public class BallMouseClick : MonoBehaviour
         if (_forceDirection == null)
             return;
 
-        Vector2 force = _forceDirection.Value.normalized;
+        Vector2 force = _forceDirection.Value.normalized * GameManager.GravityMagnitude * 0.9f;
 
-        if (force.y < 0) 
+        if (force.y < 0)
             force.y *= 0.5f; // Slow down when leaning down.
-        else
-            force.y *= 2; // Accelerate when leaning up.
 
-        float factor = Mathf.Max(5, Physics2D.gravity.magnitude); // This befaviour is not clear from the task description, so I used Mathf.Max(...) to be able to up the ball from the floor.
-        _rigidbody.AddForce(force * factor);
+        _rigidbody.AddForce(force);
     }
 
     #endregion

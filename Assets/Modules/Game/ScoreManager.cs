@@ -2,28 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 public class ScoreManager : MonoBehaviour
 {
-    private static readonly GUIStyle _guiStyle = new GUIStyle();
+    public Text ScoreText;
 
     #region MonoBehaviour
 
     private void Awake()
     {
-        _guiStyle.fontSize = 26;
-        _guiStyle.normal.textColor = Color.black;
+        this.Assert(ScoreText);
     }
 
-    private void OnGUI()
+    private void Update()
     {
-        string text = "Hits: " + HitBallCounter;
-        GUIContent content = new GUIContent(text);
-        Vector2 textSize = _guiStyle.CalcSize(content);
-        float margin = 15;
-        Rect pos = new Rect(Screen.width - textSize.x - margin, margin, textSize.x, textSize.y);
-        GUI.Label(pos, content, _guiStyle);
+        ScoreText.text = HitBallCounter.ToString();
     }
 
     #endregion
